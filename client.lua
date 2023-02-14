@@ -1,5 +1,16 @@
 local helmetEnabled = true
+local githubResourceName = "HelmetFixer"
+local githubUsername = "VexoaXYZ"
 
+local function GetResourceVersion(resourceName)
+    local version = GetResourceMetadata(resourceName, "version", 0)
+    if not version then
+        print("[My Script] Error getting version for resource: " .. resourceName)
+    end
+    return version
+end
+
+local currentVersion = GetResourceVersion(GetCurrentResourceName())
 -- Function to toggle helmet keeping on/off
 function ToggleHelmetKeeping()
   helmetEnabled = not helmetEnabled
@@ -24,3 +35,16 @@ if(helmetEnabled) then
       end
   end)
 end
+
+Citizen.CreateThread(function()
+  PerformHttpRequest("https://raw.githubusercontent.com/" .. githubUsername .. "/" .. githubResourceName .. "/master/version.txt", function(errorCode, resultData, resultHeaders)
+      if errorCode ~= 200 then
+          print("[Creative Solutions] Error checking for update: " .. errorCode)
+          return
+      end
+      local latestVersion = string.gsub(resultData, "\n", "")
+      if currentVersion ~= latestVersion then
+          print("[Creative Solutions] A new version is available (" .. latestVersion .. "). Please update.")
+      end
+  end, "GET", "", {})
+end)
