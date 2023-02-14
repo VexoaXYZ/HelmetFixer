@@ -1,7 +1,3 @@
-local helmetEnabled = true
-local githubResourceName = "HelmetFixer"
-local githubUsername = "VexoaXYZ"
-
 local function GetResourceVersion(resourceName)
     local version = GetResourceMetadata(resourceName, "version", 0)
     if not version then
@@ -10,14 +6,20 @@ local function GetResourceVersion(resourceName)
     return version
 end
 
+local helmetEnabled = true
+local githubResourceName = "HelmetFixer"
+local githubUsername = "VexoaXYZ"
 local currentVersion = GetResourceVersion(GetCurrentResourceName())
+
 -- Function to toggle helmet keeping on/off
 function ToggleHelmetKeeping()
   helmetEnabled = not helmetEnabled
   if helmetEnabled then
     TriggerEvent('chat:addMessage', { args = { '^1[Helmet Keeping]', '^7The helmet-keeping feature has been disabled.' } })
+    -- This is when the helmet is disabled
   else
     TriggerEvent('chat:addMessage', { args = { '^1[Helmet Keeping]', '^7The helmet-keeping feature has been enabled.' } })
+    -- This is when the helmet is enabled
   end
 end
 
